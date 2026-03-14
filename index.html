@@ -13,18 +13,10 @@ text-align: center;
 background:#f4f4f4;
 }
 
-h1{
-margin-top:30px;
-}
-
 button{
 padding:10px;
 margin:5px;
 font-size:16px;
-}
-
-input{
-padding:8px;
 }
 
 table{
@@ -41,6 +33,11 @@ padding:10px;
 
 th{
 background:#ddd;
+}
+
+.ganador{
+background:#90EE90;
+font-weight:bold;
 }
 
 </style>
@@ -66,7 +63,8 @@ background:#ddd;
 <tr>
 <th>Competidor</th>
 <th>Tiempo (s)</th>
-<th>Diferencia con el primero (s)</th>
+<th>Diferencia (s)</th>
+<th>Estado</th>
 </tr>
 
 </table>
@@ -77,10 +75,8 @@ let inicio = 0;
 let datos = [];
 
 function iniciar(){
-
 inicio = Date.now();
 alert("Cronómetro iniciado");
-
 }
 
 function reiniciar(){
@@ -88,17 +84,16 @@ function reiniciar(){
 inicio = 0;
 datos = [];
 
-let tabla = document.getElementById("tabla");
+let tabla=document.getElementById("tabla");
 
-tabla.innerHTML = `
+tabla.innerHTML=`
 <tr>
 <th>Competidor</th>
 <th>Tiempo (s)</th>
-<th>Diferencia con el primero (s)</th>
+<th>Diferencia (s)</th>
+<th>Estado</th>
 </tr>
 `;
-
-alert("Cronómetro reiniciado");
 
 }
 
@@ -109,14 +104,14 @@ alert("Primero debe iniciar el cronómetro");
 return;
 }
 
-let nombre = document.getElementById("nombre").value;
+let nombre=document.getElementById("nombre").value;
 
-if(nombre === ""){
-alert("Ingrese el nombre del competidor");
+if(nombre===""){
+alert("Ingrese nombre");
 return;
 }
 
-let tiempo = ((Date.now() - inicio)/1000).toFixed(2);
+let tiempo=((Date.now()-inicio)/1000).toFixed(2);
 
 datos.push({
 nombre:nombre,
@@ -131,27 +126,31 @@ document.getElementById("nombre").value="";
 
 function mostrar(){
 
-let tabla = document.getElementById("tabla");
+let tabla=document.getElementById("tabla");
 
-tabla.innerHTML = `
+tabla.innerHTML=`
 <tr>
 <th>Competidor</th>
 <th>Tiempo (s)</th>
-<th>Diferencia con el primero (s)</th>
+<th>Diferencia (s)</th>
+<th>Estado</th>
 </tr>
 `;
 
-let primero = Math.min(...datos.map(x=>x.tiempo));
+let primero=Math.min(...datos.map(x=>x.tiempo));
 
 datos.forEach(c=>{
 
-let diferencia = (c.tiempo - primero).toFixed(2);
+let diferencia=(c.tiempo-primero).toFixed(2);
 
-tabla.innerHTML += `
-<tr>
+let esGanador = c.tiempo === primero;
+
+tabla.innerHTML+=`
+<tr class="${esGanador ? 'ganador' : ''}">
 <td>${c.nombre}</td>
 <td>${c.tiempo}</td>
 <td>${diferencia}</td>
+<td>${esGanador ? '🏆 Ganador' : ''}</td>
 </tr>
 `;
 
