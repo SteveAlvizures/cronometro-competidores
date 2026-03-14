@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Cronómetro</title>
+<style>
+
+body{
+font-family:Arial;
+text-align:center;
+}
+
+table{
+margin:auto;
+border-collapse:collapse;
+}
+
+td,th{
+border:1px solid black;
+padding:8px;
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>Cronómetro de Competidores</h1>
+
+<button onclick="iniciar()">Iniciar</button>
+
+<br><br>
+
+<input id="nombre" placeholder="Nombre del competidor">
+<button onclick="registrar()">Registrar tiempo</button>
+
+<h2>Resultados</h2>
+
+<table id="tabla">
+<tr>
+<th>Competidor</th>
+<th>Tiempo</th>
+<th>Diferencia</th>
+</tr>
+</table>
+
+<script>
+
+let inicio=0;
+let datos=[];
+
+function iniciar(){
+inicio=Date.now();
+alert("Cronómetro iniciado");
+}
+
+function registrar(){
+
+let nombre=document.getElementById("nombre").value;
+
+let tiempo=((Date.now()-inicio)/1000).toFixed(2);
+
+datos.push({
+nombre:nombre,
+tiempo:parseFloat(tiempo)
+});
+
+mostrar();
+
+}
+
+function mostrar(){
+
+let tabla=document.getElementById("tabla");
+
+tabla.innerHTML=`
+<tr>
+<th>Competidor</th>
+<th>Tiempo</th>
+<th>Diferencia</th>
+</tr>
+`;
+
+let primero=Math.min(...datos.map(x=>x.tiempo));
+
+datos.forEach(c=>{
+
+let dif=(c.tiempo-primero).toFixed(2);
+
+tabla.innerHTML+=`
+<tr>
+<td>${c.nombre}</td>
+<td>${c.tiempo}</td>
+<td>${dif}</td>
+</tr>
+`;
+
+});
+
+}
+
+</script>
+
+</body>
+</html>
